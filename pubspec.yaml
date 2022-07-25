@@ -26,7 +26,7 @@ dependencies:
   web_socket_channel: ^2.2.0
   collection: ^1.15.0
   device_info: ^2.0.3
-  package_info: ^2.0.2
+  package_info_plus: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -49,3 +49,6 @@ flutter:
         pluginClass: FlutterDerivApiPlugin
       ios:
         pluginClass: FlutterDerivApiPlugin
+      web:
+        default_package: flutter_deriv_api_web
+        fileName: flutter_deriv_api_web.dart

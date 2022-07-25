@@ -18,7 +18,7 @@ import 'package:flutter_deriv_api/services/connection/call_manager/call_manager.
 import 'package:flutter_deriv_api/services/connection/call_manager/exceptions/call_manager_exception.dart';
 import 'package:flutter_deriv_api/services/connection/call_manager/subscription_manager.dart';
 
-import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
 /// This class is for handling Binary API connection and calling Binary APIs.
@@ -32,7 +32,7 @@ class BinaryAPI extends BaseAPI {
   bool _connected = false;
 
   /// Represents the active web socket connection.
-  IOWebSocketChannel? _webSocketChannel;
+  WebSocketChannel? _webSocketChannel;
 
   /// Stream subscription to API data.
   StreamSubscription<Map<String, dynamic>?>? _webSocketListener;
@@ -75,12 +75,11 @@ class BinaryAPI extends BaseAPI {
 
     dev.log('connecting to $uri.');
 
-    await _setUserAgent();
+    // await _setUserAgent();
 
     // Initialize connection to web socket server.
-    _webSocketChannel = IOWebSocketChannel.connect(
-      uri.toString(),
-      pingInterval: _wsConnectTimeOut,
+    _webSocketChannel = WebSocketChannel.connect(
+      uri
     );
 
     _webSocketListener = _webSocketChannel?.stream

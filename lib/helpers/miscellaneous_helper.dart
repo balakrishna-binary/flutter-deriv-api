@@ -6,7 +6,7 @@ import 'package:flutter_deriv_api/api/exceptions/api_base_exception.dart';
 import 'package:flutter_deriv_api/api/models/base_exception_model.dart';
 import 'package:flutter_deriv_api/basic_api/response.dart';
 
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 /// Parses the [url] and gets the endpoint out of it
 String? parseWebSocketUrl(String? url, {bool isAuthUrl = false}) {
@@ -49,25 +49,28 @@ void checkException({
 
 /// Generates device specific user agent.
 Future<String> getUserAgent() async {
-  String userAgent = '';
+  String userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36';
 
   final PackageInfo packageInfo = await PackageInfo.fromPlatform();
   final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
-  if (Platform.isAndroid) {
-    final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+  try {
+    if (Platform.isAndroid) {
+      final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
 
-    userAgent =
-        'Mozilla/5.0 (Linux; U; Android ${androidInfo.version.release}; ${androidInfo.model} '
-        'Build/${androidInfo.id}) '
-        '${packageInfo.appName}/${packageInfo.version}+${packageInfo.buildNumber}';
-  } else if (Platform.isIOS) {
-    final IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      userAgent =
+          'Mozilla/5.0 (Linux; U; Android ${androidInfo.version.release}; ${androidInfo.model} '
+          'Build/${androidInfo.id}) '
+          '${packageInfo.appName}/${packageInfo.version}+${packageInfo.buildNumber}';
+    } else if (Platform.isIOS) {
+      final IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
 
-    userAgent = 'Mozilla/5.0 (${iosInfo.utsname.machine} '
-        '${iosInfo.systemName}/${iosInfo.systemVersion} '
-        'Darwin/${iosInfo.utsname.release}) '
-        '${packageInfo.appName}/${packageInfo.version}+${packageInfo.buildNumber}';
+      userAgent = 'Mozilla/5.0 (${iosInfo.utsname.machine} '
+          '${iosInfo.systemName}/${iosInfo.systemVersion} '
+          'Darwin/${iosInfo.utsname.release}) '
+          '${packageInfo.appName}/${packageInfo.version}+${packageInfo.buildNumber}';
+    }
+  } catch(e){
   }
 
   return userAgent;
